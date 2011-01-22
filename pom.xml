@@ -50,9 +50,6 @@
 		                        <goals>
 		                            <goal>generate-pdf</goal>
 		                        </goals>
-		                        <configuration>
-		                            <includes>djangobook.xml</includes>
-		                        </configuration>
 		                    </execution>
 		                </executions>
 		            </plugin>
@@ -72,8 +69,18 @@
 		                        <goals>
 		                            <goal>generate-html</goal>
 		                        </goals>
-		                        <configuration>
-		                            <includes>djangobook.xml</includes>
+								<configuration>
+									<htmlStylesheet>${basedir}/src/docbkx/css/djangobook.css</htmlStylesheet>
+					                <preProcess>
+						                  <!-- Copy the images -->
+						                  <copy todir="${project.build.directory}/docbkx/html/pics">
+							                    <fileset dir="src/docbkx/pics/" />
+						                  </copy>
+						                  <!-- Copy the css -->
+						                  <copy todir="${project.build.directory}/docbkx/html/css">
+							                    <fileset dir="src/docbkx/css/" />
+						                  </copy>
+ 				                  	</preProcess>
 		                        </configuration>
 		                    </execution>
 		                </executions>
@@ -95,7 +102,13 @@
 		                            <goal>generate-epub</goal>
 		                        </goals>
 		                        <configuration>
-		                            <includes>djangobook.xml</includes>
+					                <chunkQuietly>true</chunkQuietly>
+					                <preProcess>
+						                  <!-- Copy the images -->
+						                  <copy todir="${project.build.directory}/docbkx/epub/pics">
+							                    <fileset dir="src/docbkx/pics/" />
+						                  </copy>
+ 				                  	</preProcess>
 		                        </configuration>
 		                    </execution>
 		                </executions>
@@ -115,12 +128,14 @@
                         <groupId>org.docbook</groupId>
                         <artifactId>docbook-xml</artifactId>
                         <version>4.4</version>
-                        <scope>runtime</scope>
+                        <scope>compile</scope>
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <includes>djangobook.xml</includes>
                     <generatedSourceDirectory>${project.build.directory}/docbkx/generated</generatedSourceDirectory>
-                    <foCustomization>${project.basedir}/src/docbkx-stylesheet/fo/docbook.xsl</foCustomization>
+                    <foCustomization>${maven.compile.classpath}/docbook/fo/docbook.xsl</foCustomization>
+                    <foCustomization>${basedir}/docbkx-stylesheet/fo/docbook.xsl</foCustomization>
                     <xincludeSupported>true</xincludeSupported>
                     <paperType>A4</paperType>
                     <fop1Extensions>1</fop1Extensions>
