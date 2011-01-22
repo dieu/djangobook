@@ -33,93 +33,120 @@
         </pluginRepository>
     </pluginRepositories>
 
-	<profiles>
-		<profile>
-	    	<id>pdf</id>
-	    	<activation>
-	      		<activeByDefault>true</activeByDefault>
-	    	</activation>		
-			<build>
-		        <plugins>
-		            <plugin>
-		                <groupId>com.agilejava.docbkx</groupId>
-		                <artifactId>docbkx-maven-plugin</artifactId>
-		                <executions>
-		                    <execution>
-		                        <phase>package</phase>
-		                        <goals>
-		                            <goal>generate-pdf</goal>
-		                        </goals>
-		                    </execution>
-		                </executions>
-		            </plugin>
-				</plugins>
-		    </build>
-		</profile>
-		<profile>
-	    	<id>html</id>
-		    <build>
-		        <plugins>
-		            <plugin>
-		                <groupId>com.agilejava.docbkx</groupId>
-		                <artifactId>docbkx-maven-plugin</artifactId>
-		                <executions>
-		                    <execution>
-		                        <phase>package</phase>
-		                        <goals>
-		                            <goal>generate-html</goal>
-		                        </goals>
-								<configuration>
-									<htmlStylesheet>${basedir}/src/docbkx/css/djangobook.css</htmlStylesheet>
-					                <preProcess>
-						                  <!-- Copy the images -->
-						                  <copy todir="${project.build.directory}/docbkx/html/pics">
-							                    <fileset dir="src/docbkx/pics/" />
-						                  </copy>
-						                  <!-- Copy the css -->
-						                  <copy todir="${project.build.directory}/docbkx/html/css">
-							                    <fileset dir="src/docbkx/css/" />
-						                  </copy>
- 				                  	</preProcess>
-		                        </configuration>
-		                    </execution>
-		                </executions>
-		            </plugin>
-				</plugins>
-		    </build>
-		</profile>
-		<profile>
-	    	<id>epub</id>
-		    <build>
-		        <plugins>
-		            <plugin>
-		                <groupId>com.agilejava.docbkx</groupId>
-		                <artifactId>docbkx-maven-plugin</artifactId>
-		                <executions>
-		                    <execution>
-		                        <phase>package</phase>
-		                        <goals>
-		                            <goal>generate-epub</goal>
-		                        </goals>
-		                        <configuration>
-					                <chunkQuietly>true</chunkQuietly>
-					                <preProcess>
-						                  <!-- Copy the images -->
-						                  <copy todir="${project.build.directory}/docbkx/epub/pics">
-							                    <fileset dir="src/docbkx/pics/" />
-						                  </copy>
- 				                  	</preProcess>
-		                        </configuration>
-		                    </execution>
-		                </executions>
-		            </plugin>
-				</plugins>
-		    </build>
-		</profile>
-	</profiles>
+    <profiles>
+        <profile>
+            <id>pdf</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.agilejava.docbkx</groupId>
+                        <artifactId>docbkx-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>generate-pdf</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>html</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.agilejava.docbkx</groupId>
+                        <artifactId>docbkx-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>generate-html</goal>
+                                </goals>
+                                <configuration>
+                                    <htmlStylesheet>${basedir}/src/docbkx/css/djangobook.css</htmlStylesheet>
+                                    <preProcess>
+                                        <!-- Copy the images -->
+                                        <copy todir="${project.build.directory}/docbkx/html/pics">
+                                            <fileset dir="src/docbkx/pics/" />
+                                        </copy>
+                                        <!-- Copy the css -->
+                                        <copy todir="${project.build.directory}/docbkx/html/css">
+                                            <fileset dir="src/docbkx/css/" />
+                                        </copy>
+                                    </preProcess>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>epub</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.agilejava.docbkx</groupId>
+                        <artifactId>docbkx-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>generate-epub</goal>
+                                </goals>
+                                <configuration>
+                                    <chunkQuietly>true</chunkQuietly>
+                                    <preProcess>
+                                        <!-- Copy the images -->
+                                        <copy todir="${project.build.directory}/docbkx/epub/pics">
+                                            <fileset dir="src/docbkx/pics/" />
+                                        </copy>
+                                    </preProcess>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>net.sf.docbook</groupId>
+                                    <artifactId>docbook-xsl</artifactId>
+                                    <version>1.76.1</version>
+                                    <classifier>ns-resources</classifier>
+                                    <type>zip</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${project.build.directory}/resources</outputDirectory>
+                                    <includes>**/*</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>com.agilejava.docbkx</groupId>
                 <artifactId>docbkx-maven-plugin</artifactId>
@@ -134,8 +161,7 @@
                 <configuration>
                     <includes>djangobook.xml</includes>
                     <generatedSourceDirectory>${project.build.directory}/docbkx/generated</generatedSourceDirectory>
-                    <foCustomization>${maven.compile.classpath}/docbook/fo/docbook.xsl</foCustomization>
-                    <foCustomization>${basedir}/docbkx-stylesheet/fo/docbook.xsl</foCustomization>
+                    <foCustomization>${project.build.directory}/resources/docbook/fo/docbook.xsl</foCustomization>
                     <xincludeSupported>true</xincludeSupported>
                     <paperType>A4</paperType>
                     <fop1Extensions>1</fop1Extensions>
@@ -146,10 +172,10 @@
                     <symbolFontFamily>Georgia</symbolFontFamily>
                     <titleFontFamily>Georgia</titleFontFamily>
                     <monospaceFontFamily>Courier New</monospaceFontFamily>
-					<!-- use extensions -->
-					<useExtensions>1</useExtensions>
-					<!-- callouts -->
-					<calloutsExtension>1</calloutsExtension>
+                    <!-- use extensions -->
+                    <useExtensions>1</useExtensions>
+                    <!-- callouts -->
+                    <calloutsExtension>1</calloutsExtension>
                     <fonts>
                         <font>
                             <name>Georgia</name>
