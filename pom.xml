@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>me.apanasenko.docbook</groupId>
+    <artifactId>djangobook</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Django book (Russian translate)</name>
+    <packaging>pom</packaging>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>docbkx.stable</id>
+            <name>Maven Plugin Stable</name>
+            <url>http://docbkx-tools.sourceforge.net/repository/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>docbkx.snapshots</id>
+            <name>Maven Plugin Snapshots</name>
+            <url>http://docbkx-tools.sourceforge.net/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.agilejava.docbkx</groupId>
+                <artifactId>docbkx-maven-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.docbook</groupId>
+                        <artifactId>docbook-xml</artifactId>
+                        <version>4.4</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>generate-pdf</goal>
+                            <!-- <goal>generate-html</goal> -->
+                        </goals>
+                        <configuration>
+                            <includes>djangobook.xml</includes>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generatedSourceDirectory>${project.build.directory}/docbkx/generated</generatedSourceDirectory>
+                    <foCustomization>${project.basedir}/src/docbkx-stylesheet/fo/docbook.xsl</foCustomization>
+                    <xincludeSupported>true</xincludeSupported>
+                    <paperType>A4</paperType>
+                    <fop1Extensions>1</fop1Extensions>
+                    <highlightSource>1</highlightSource>
+                    <highlightDefaultLanguage>python</highlightDefaultLanguage>
+                    <bodyFontFamily>Georgia</bodyFontFamily>
+                    <sansFontFamily>Georgia</sansFontFamily>
+                    <symbolFontFamily>Georgia</symbolFontFamily>
+                    <titleFontFamily>Georgia</titleFontFamily>
+                    <monospaceFontFamily>Courier New</monospaceFontFamily>
+                    <fonts>
+                        <font>
+                            <name>Georgia</name>
+                            <style>normal</style>
+                            <weight>normal</weight>
+                            <embedFile>${basedir}/src/fonts/Georgia.ttf</embedFile>
+                            <metricsFile>${basedir}/target/fonts/Georgia-metrics.xml</metricsFile>
+                        </font>
+                        <font>
+                            <name>Courier New</name>
+                            <style>normal</style>
+                            <weight>normal</weight>
+                            <embedFile>${basedir}/src/fonts/Courier New.ttf</embedFile>
+                            <metricsFile>${basedir}/target/fonts/Courier New-metrics.xml</metricsFile>
+                        </font>
+                    </fonts>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.agilejava.docbkx</groupId>
+                <artifactId>docbkx-fop-support</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
