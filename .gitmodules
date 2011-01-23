@@ -1,0 +1,3 @@
+[submodule "src/docbkx"]
+	path = src/docbkx
+	url = git://github.com/RaD/djangobook.git

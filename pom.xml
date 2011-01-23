@@ -159,7 +159,8 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <includes>djangobook.xml</includes>
+					<sourceDirectory>${basedir}/src/docbkx-fix</sourceDirectory>
+                    <includes>djangobook-fix.xml</includes>
                     <generatedSourceDirectory>${project.build.directory}/docbkx/generated</generatedSourceDirectory>
                     <foCustomization>${project.build.directory}/resources/docbook/fo/docbook.xsl</foCustomization>
                     <xincludeSupported>true</xincludeSupported>
